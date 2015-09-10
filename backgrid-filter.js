@@ -511,5 +511,10 @@
     }
 
   });
-
+  
+  return {
+    ServerSideFilter: ServerSideFilter,
+    ClientSideFilter: ClientSideFilter,
+    LunrFilter: LunrFilter
+  };
 }));
