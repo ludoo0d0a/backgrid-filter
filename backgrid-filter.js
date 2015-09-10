@@ -202,6 +202,62 @@
 
   });
 
+
+/**
+ * Bootstrap dedicated version
+ */
+ var BServerSideFilter = Backgrid.Extension.BServerSideFilter = Backgrid.Extension.ServerSideFilter.extend({
+
+    /** @property */
+    tagName: "form",
+
+    /** @property */
+    className: "backgrid-filter input-group col-md-5",
+
+    /** @property {function(Object, ?Object=): string} template */
+    template: _.template('<span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>' +
+                         '  <input type="search" <% if (placeholder) { %> placeholder="<%- placeholder %>" <% } %> name="<%- name %>" class="form-control" />' +
+                         '  <span class="input-group-addon" id="clear"><a  data-backgrid-action="clear" href="#"><span class="glyphicon glyphicon-remove-sign"></span></a></span><br/>', null, {variable: null}),
+    //template: _.template(' <span class="search">&nbsp;</span><input type="search" <% if (placeholder) { %> placeholder="<%- placeholder %>" <% } %> name="<%- name %>" /><a class="clear" data-backgrid-action="clear" href="#">&times;</a>', null, {variable: null}),
+
+    /**
+       @param {Object} options
+       @param {Backbone.Collection} options.collection
+       @param {string} [options.name]
+       @param {string} [options.placeholder]
+    */
+    initialize: function (options) {
+      BServerSideFilter.__super__.initialize.apply(this, arguments);
+    },
+
+    /**
+       Event handler. Show the clear button when the search box has text, hide
+       it otherwise.
+     */
+    showClearButtonMaybe: function () {
+      //var $clearContent = this.clearContent();
+      var $clearButton = this.clearButton();
+      var searchTerms = this.searchBox().val();
+      if (searchTerms) $clearButton.show() ;
+      else $clearButton.hide();
+    },
+
+    /**
+       Returns the search input box.
+     */
+    searchBox: function () {
+      return this.$el.find("input[type=search]");
+    },
+
+    /**
+       Returns the clear button.
+     */
+    clearButton: function () {
+      //return this.$el.find("a[data-backgrid-action=clear]");
+      return this.$el.find("span[id=clear]");
+      //return this.$el.hasClass("clear");
+    }
+});
   /**
      ClientSideFilter is a search form widget that searches a collection for
      model matches against a query on the client side. The exact matching
@@ -514,6 +570,7 @@
   
   return {
     ServerSideFilter: ServerSideFilter,
+    BServerSideFilter: BServerSideFilter,
     ClientSideFilter: ClientSideFilter,
     LunrFilter: LunrFilter
   };
