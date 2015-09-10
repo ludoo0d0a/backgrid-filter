@@ -15,9 +15,12 @@
     (function () {
       var lunr;
       try { lunr = require("lunr"); } catch (e) {}
-      module.exports = factory(require("underscore"),
-                               require("backbone"),
-                               require("backgrid"),
+      var Backbone = global.Backbone || require("backbone");
+      Backbone.$ = Backbone.$ || require("jquery");
+      var Backgrid = global.Backgrid || require("backgrid");
+      module.exports = factory(require("lodash"),
+                               Backbone,
+                               Backgrid,
                                lunr);
     }());
   } else {
