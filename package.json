@@ -15,6 +15,7 @@
     "backgrid"
   ],
   "author": "Jimmy Yuen Ho Wong <wyuenho@gmail.com>",
+  "author": "Ludovic Valente <ludovic.valente@gmail.com>",
   "license": "MIT",
   "readmeFilename": "README.md",
   "bugs": {
@@ -36,6 +37,5 @@
     "backbone" : "*",
     "jquery" : "*",
     "backgrid" : "*"
-  },
-  "private": true
+  }
 }
