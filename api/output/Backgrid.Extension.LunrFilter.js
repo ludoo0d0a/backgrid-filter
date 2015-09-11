@@ -223,7 +223,7 @@ Ext.data.JsonP.Backgrid_Extension_LunrFilter({
   "linenr": 346,
   "files": [
     {
-      "filename": "backgrid-filter.js",
+      "filename": "backgrid-filter-bootstrap.js",
       "href": null
     }
   ],

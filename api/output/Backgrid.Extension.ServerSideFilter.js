@@ -151,7 +151,7 @@ Ext.data.JsonP.Backgrid_Extension_ServerSideFilter({
   "linenr": 30,
   "files": [
     {
-      "filename": "backgrid-filter.js",
+      "filename": "backgrid-filter-bootstrap.js",
       "href": null
     }
   ],

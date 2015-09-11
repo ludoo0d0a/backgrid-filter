@@ -1,5 +1,5 @@
 /*
-  backgrid-filter
+  backgrid-filter-bootstrap
   http://github.com/wyuenho/backgrid
 
   Copyright (c) 2013 Jimmy Yuen Ho Wong and contributors
@@ -9,7 +9,7 @@
 
   if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
-    define(["underscore", "backbone", "backgrid"], factory);
+    define(["lodash", "backbone", "backgrid"], factory);
   } else if (typeof exports == "object") {
     // CommonJS
     (function () {
@@ -42,13 +42,19 @@
 
     /** @property */
     tagName: "form",
+    
+    /** @property */
+    bootstrap: true,
 
     /** @property */
-    className: "backgrid-filter form-search",
+    //className: "backgrid-filter form-search",
+    className: "backgrid-filter form-search input-group col-md-5",
 
-    /** @property {function(Object, ?Object=): string} template */
-    template: function (data) {
-      return '<span class="search">&nbsp;</span><input type="search" ' + (data.placeholder ? 'placeholder="' + data.placeholder + '"' : '') + ' name="' + data.name + '" ' + (data.value ? 'value="' + data.value + '"' : '') + '/><a class="clear" data-backgrid-action="clear" href="#">&times;</a>';
+    tpl: {
+      basic:'<span class="search">&nbsp;</span><input type="search" <% if (placeholder) { %> placeholder="<%- placeholder %>" <% } %> name="<%- name %>" /><a class="clear" data-backgrid-action="clear" href="#">&times;</a>',
+      bootstrap: '<span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>' +
+                         '  <input type="search" <% if (placeholder) { %> placeholder="<%- placeholder %>" <% } %> name="<%- name %>" class="form-control" />' +
+                         '  <span class="input-group-addon" id="clear"><a data-backgrid-action="clear" href="#"><span class="glyphicon glyphicon-remove-sign"></span></a></span><br/>'
     },
 
     /** @property */
@@ -83,7 +89,11 @@
       this.name = options.name || this.name;
       this.value = options.value || this.value;
       this.placeholder = options.placeholder || this.placeholder;
-      this.template = options.template || this.template;
+      var tpl = this.tpl.basic;
+      if (this.boostrap) {
+        tpl = this.tpl.bootstrap;
+      }
+      this.template = options.template || _.template(tpl, null, {variable: null});
 
       // Persist the query on pagination
       var collection = this.collection, self = this;
@@ -127,9 +137,11 @@
        Returns the clear button.
      */
     clearButton: function () {
-      return this.$el.find("a[data-backgrid-action=clear]");
+      var sel = (this.boostrap)?"span[id=clear]":"a[data-backgrid-action=clear]";
+      return this.$el.find(sel);
+      //return this.$el.hasClass("clear");
     },
-
+    
 
     /**
        Returns the current search query.
@@ -202,62 +214,6 @@
 
   });
 
-
-/**
- * Bootstrap dedicated version
- */
- var BServerSideFilter = Backgrid.Extension.BServerSideFilter = Backgrid.Extension.ServerSideFilter.extend({
-
-    /** @property */
-    tagName: "form",
-
-    /** @property */
-    className: "backgrid-filter input-group col-md-5",
-
-    /** @property {function(Object, ?Object=): string} template */
-    template: _.template('<span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>' +
-                         '  <input type="search" <% if (placeholder) { %> placeholder="<%- placeholder %>" <% } %> name="<%- name %>" class="form-control" />' +
-                         '  <span class="input-group-addon" id="clear"><a  data-backgrid-action="clear" href="#"><span class="glyphicon glyphicon-remove-sign"></span></a></span><br/>', null, {variable: null}),
-    //template: _.template(' <span class="search">&nbsp;</span><input type="search" <% if (placeholder) { %> placeholder="<%- placeholder %>" <% } %> name="<%- name %>" /><a class="clear" data-backgrid-action="clear" href="#">&times;</a>', null, {variable: null}),
-
-    /**
-       @param {Object} options
-       @param {Backbone.Collection} options.collection
-       @param {string} [options.name]
-       @param {string} [options.placeholder]
-    */
-    initialize: function (options) {
-      BServerSideFilter.__super__.initialize.apply(this, arguments);
-    },
-
-    /**
-       Event handler. Show the clear button when the search box has text, hide
-       it otherwise.
-     */
-    showClearButtonMaybe: function () {
-      //var $clearContent = this.clearContent();
-      var $clearButton = this.clearButton();
-      var searchTerms = this.searchBox().val();
-      if (searchTerms) $clearButton.show() ;
-      else $clearButton.hide();
-    },
-
-    /**
-       Returns the search input box.
-     */
-    searchBox: function () {
-      return this.$el.find("input[type=search]");
-    },
-
-    /**
-       Returns the clear button.
-     */
-    clearButton: function () {
-      //return this.$el.find("a[data-backgrid-action=clear]");
-      return this.$el.find("span[id=clear]");
-      //return this.$el.hasClass("clear");
-    }
-});
   /**
      ClientSideFilter is a search form widget that searches a collection for
      model matches against a query on the client side. The exact matching
@@ -570,7 +526,6 @@
   
   return {
     ServerSideFilter: ServerSideFilter,
-    BServerSideFilter: BServerSideFilter,
     ClientSideFilter: ClientSideFilter,
     LunrFilter: LunrFilter
   };

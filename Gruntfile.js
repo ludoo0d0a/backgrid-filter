@@ -1,6 +1,6 @@
 /*
-  backgrid-filter
-  http://github.com/wyuenho/backgrid-text-cell
+  backgrid-filter-bootstrap
+  http://github.com/ludoo0d0a/backgrid-filter-bootstrap
 
   Copyright (c) 2013 Jimmy Yuen Ho Wong and contributors
   Licensed under the MIT license.
@@ -32,7 +32,7 @@ module.exports = function (grunt) {
       test: {
         version: "1.3.1",
         src: [
-          "backgrid-filter.js"
+          "backgrid-filter-bootstrap.js"
         ],
         options: {
           specs: [
@@ -50,7 +50,7 @@ module.exports = function (grunt) {
           },
           vendor: [
             "test/vendor/js/jquery.js",
-            "test/vendor/js/underscore.js",
+            "test/vendor/js/lodash.js",
             "test/vendor/js/backbone.js",
             "test/vendor/js/backgrid.js",
             'test/vendor/js/lunr.js',
@@ -61,10 +61,10 @@ module.exports = function (grunt) {
     },
     jsduck: {
       main: {
-        src: ["backgrid-filter.js"],
+        src: ["backgrid-filter-bootstrap.js"],
         dest: "api",
         options: {
-          "title": "backgrid-filter",
+          "title": "backgrid-filter-bootstrap",
           "no-source": true,
           "categories": "categories.json",
           "warnings": "-no_doc",
@@ -98,7 +98,7 @@ module.exports = function (grunt) {
       },
       "default": {
         files: {
-          "backgrid-filter.min.js": ["backgrid-filter.js"]
+          "backgrid-filter-bootstrap.min.js": ["backgrid-filter-bootstrap.js"]
         }
       }
     }
